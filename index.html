@@ -6,7 +6,8 @@
 // ═══════════════════════════════════════════════════════════
 // KONFIGURASI — diisi otomatis oleh sistem, jangan diedit manual
 const SHEETS_URL = "https://script.google.com/macros/s/AKfycbwaoe_rMcq4quR2zl7x-8jdDUDOzqKw0kL6lyruKfhKkDDYLzTDOStl_nRPSys1Y4u7EA/exec";
-const TEAM_PIN   = "778899";
+const EDITOR_PIN = "777777"; // Berikan ke admin
+const VIEWER_PIN = "112233"; // Berikan ke user yang hanya boleh preview
 // ═══════════════════════════════════════════════════════════
 </script>
 <style>
@@ -270,6 +271,28 @@ header{position:sticky;top:0;background:var(--bg);z-index:20;padding:12px 0 10px
 .toast-ico{font-size:14px;flex-shrink:0;line-height:1}
 .toast-msg{flex:1;line-height:1.45}
 @media(max-width:600px){.toast-container{left:12px;right:12px;bottom:12px}.toast{max-width:none}}
+
+/* ── ROLE VIEWER RESTRICTIONS ── */
+body.role-viewer .btn-red, 
+body.role-viewer #btn-ref-all, 
+body.role-viewer button[onclick*="imp.click()"], 
+body.role-viewer .api-section button, 
+body.role-viewer .row-actions button, 
+body.role-viewer .d-foot button, 
+body.role-viewer #ar-toggle,
+body.role-viewer .s2-notif-dismiss {
+  display: none !important;
+}
+body.role-viewer .stage-sel,
+body.role-viewer .note-inp,
+body.role-viewer .category-inp,
+body.role-viewer #ar-hour,
+body.role-viewer #ar-s2thresh,
+body.role-viewer #ar-thresh {
+  pointer-events: none !important;
+  opacity: 0.6;
+  background: var(--surf2);
+}
 </style>
 </head>
 <body>
@@ -397,9 +420,14 @@ function writeBackupSheet_(channelList) {
     <div class="help">Dari Deploy → Manage deployments → copy URL-nya</div>
    </div>
    <div class="field">
-    <label>PIN tim (4 digit)</label>
-    <input type="password" id="s-pin" placeholder="Bebas, contoh: tim123 atau rahasia2024">
-    <div class="help">Semua anggota tim pakai PIN yang sama untuk masuk</div>
+    <label>PIN Editor / Admin</label>
+    <input type="password" id="s-pin-edit" placeholder="Contoh: admin123">
+    <div class="help">Bisa menambah, menghapus, & edit data</div>
+   </div>
+   <div class="field">
+    <label>PIN Viewer / Preview</label>
+    <input type="password" id="s-pin-view" placeholder="Contoh: user123">
+    <div class="help">Hanya bisa melihat, data aman tidak bisa diedit</div>
    </div>
    <div id="s-err"></div>
    <button class="btn-full" id="s-btn" onclick="doSetup()" disabled="">Mengecek koneksi...</button>
@@ -547,6 +575,7 @@ let newStage2Alerts = []; // notif channel baru masuk Tahap 2, di-share via Shee
 let activeKeyIdx = 0, filter = "all", categoryFilter = "all";
 let expanded = new Set(), loading = {};
 let generatedHtml = "";
+let userRole = sessionStorage.getItem("ytmon-role") || "viewer";
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 // ── Toast notification system (replaces native alert() for routine info) ──
@@ -569,9 +598,12 @@ function showToast(message, type = "info") {
 }
 
 function init() {
-  // Kalau config sudah tertanam di file, langsung ke PIN
-  if (SHEETS_URL && TEAM_PIN) {
-    if (sessionStorage.getItem("ytmon-sess") === "ok") { showApp(); return; }
+  if (SHEETS_URL && (EDITOR_PIN || VIEWER_PIN)) {
+    if (sessionStorage.getItem("ytmon-sess") === "ok") { 
+      userRole = sessionStorage.getItem("ytmon-role") || "viewer";
+      showApp(); 
+      return; 
+    }
     showScreen("pin");
   } else {
     showScreen("setup");
@@ -584,11 +616,19 @@ function showScreen(s) {
   if(s==="pin")setTimeout(()=>{const el=document.getElementById("pin-input");if(el){el.value="";el.focus();}},100);
   document.getElementById("app").style.display      = "none";
 }
+
 function showApp() {
   document.getElementById("sc-setup").style.display = "none";
   document.getElementById("sc-pin").style.display   = "none";
   document.getElementById("app").style.display      = "block";
   sessionStorage.setItem("ytmon-sess","ok");
+  
+  if (userRole === "viewer") {
+    document.body.classList.add("role-viewer");
+  } else {
+    document.body.classList.remove("role-viewer");
+  }
+
   loadFromSheets();
 }
 
@@ -600,9 +640,10 @@ function copyCode() {
 
 async function doSetup() {
   const url = document.getElementById("s-url").value.trim();
-  const pin = document.getElementById("s-pin").value.trim();
+  const pinEdit = document.getElementById("s-pin-edit").value.trim();
+  const pinView = document.getElementById("s-pin-view").value.trim();
   if (!url || !url.includes("script.google.com")) { showSErr("URL tidak valid. Harus dari script.google.com"); return; }
-  if (!pin) { showSErr("Password tidak boleh kosong."); return; }
+  if (!pinEdit || !pinView) { showSErr("Kedua PIN tidak boleh kosong."); return; }
   const btn = document.getElementById("s-btn");
   btn.disabled=true; btn.textContent="Mengecek koneksi...";
   try {
@@ -613,7 +654,8 @@ async function doSetup() {
     const src = document.documentElement.outerHTML;
     generatedHtml = src
       .replace('const SHEETS_URL = "";', `const SHEETS_URL = "${url}";`)
-      .replace('const TEAM_PIN   = "";', `const TEAM_PIN   = "${pin}";`);
+      .replace('const EDITOR_PIN = "";', `const EDITOR_PIN = "${pinEdit}";`)
+      .replace('const VIEWER_PIN = "";', `const VIEWER_PIN = "${pinView}";`);
 
     // Tampilkan download view
     document.getElementById("setup-step-view").style.display = "none";
@@ -636,10 +678,18 @@ function downloadFile() {
 
 // ── PIN ───────────────────────────────────────────────────
 function checkPin(){
-  const val=document.getElementById("pin-input").value;
-  if(val===TEAM_PIN){
-    document.getElementById("pin-input").value="";
-    document.getElementById("pin-err").textContent="";
+  const val = document.getElementById("pin-input").value;
+  if(val === EDITOR_PIN){
+    userRole = "editor";
+    sessionStorage.setItem("ytmon-role", "editor");
+    document.getElementById("pin-input").value = "";
+    document.getElementById("pin-err").textContent = "";
+    showApp();
+  } else if (val === VIEWER_PIN) {
+    userRole = "viewer";
+    sessionStorage.setItem("ytmon-role", "viewer");
+    document.getElementById("pin-input").value = "";
+    document.getElementById("pin-err").textContent = "";
     showApp();
   } else {
     document.getElementById("pin-err").textContent="Password salah, coba lagi.";
@@ -649,6 +699,8 @@ function checkPin(){
 }
 function doLogout(){
   sessionStorage.removeItem("ytmon-sess");
+  sessionStorage.removeItem("ytmon-role");
+  userRole = "viewer";
   showScreen("pin");
   setTimeout(()=>{const el=document.getElementById("pin-input");if(el){el.value="";el.focus();}},100);
 }
@@ -678,6 +730,11 @@ let _saving = false;
 let _pendingSave = false;
 
 async function saveToSheets(){
+  if (userRole === "viewer") {
+    setSyncSt("ℹ Mode Preview: Perubahan tidak akan disimpan.","#e65100");
+    return;
+  }
+  
   // Kalau sedang ada save berjalan, tandai pending dan tunggu
   if(_saving){ _pendingSave=true; return; }
   _saving=true; _pendingSave=false;
@@ -1341,6 +1398,5 @@ setInterval(()=>{
 },60000);
 init();
 </script>
-
 
 </body></html>
