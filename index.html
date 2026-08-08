@@ -5,7 +5,7 @@
 <script>
 // ═══════════════════════════════════════════════════════════
 // KONFIGURASI — diisi otomatis oleh sistem, jangan diedit manual
-const SHEETS_URL = "https://script.google.com/macros/s/AKfycbxBwX454RIjlgi65QcNjCUQzCk-qVK4Fx65Rsi3Sd8qeBR1bglXgDgwDk7E_g5De_3XJg/exec";
+const SHEETS_URL = "https://script.google.com/macros/s/AKfycbxukdujnF6LAhmkW1RNhlo_-YeQkApigw98VJveKLY4-UaTORKNrpL7MnmAieHCngIvog/exec";
 const EDITOR_PIN = "777777"; // Berikan ke admin
 const VIEWER_PIN = "112233"; // Berikan ke user yang hanya boleh preview
 // ═══════════════════════════════════════════════════════════
@@ -20,14 +20,13 @@ const VIEWER_PIN = "112233"; // Berikan ke user yang hanya boleh preview
   --b-bg:#E6F1FB;--b-txt:#0C447C;--b-bar:#3266ad;
   --g-bg:#EAF3DE;--g-txt:#27500A;--g-bar:#639922;
   --t-bg:#E1F5EE;--t-txt:#085041;--t-bar:#0F6E56;
-  --m-bg:#F3E5F5;--m-txt:#6A1B9A;--m-bar:#8E24AA;
   --ok:#2e7d32;--warn:#e65100;--danger:#c0392b;
 }
 @media(prefers-color-scheme:dark){:root{
   --bg:#0f0f0f;--surf:#1a1a1a;--surf2:#252525;
   --bdr:rgba(255,255,255,0.09);--bdr2:rgba(255,255,255,0.2);
   --txt:#f1f1f1;--txt2:#aaa;--txt3:#666;
-  --b-bg:#0C2240;--b-txt:#85B7EB;--g-bg:#173404;--g-txt:#C0DD97;--t-bg:#04342C;--t-txt:#5DCAA5;--m-bg:#311B40;--m-txt:#CE93D8;
+  --b-bg:#0C2240;--b-txt:#85B7EB;--g-bg:#173404;--g-txt:#C0DD97;--t-bg:#04342C;--t-txt:#5DCAA5;
   --shd:0 1px 3px rgba(0,0,0,0.4);
 }}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -95,7 +94,7 @@ header{position:sticky;top:0;background:var(--bg);z-index:20;padding:12px 0 10px
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
 .stat{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:9px 12px}
 .stat .lbl{font-size:11px;color:var(--txt3);margin-bottom:2px}.stat .num{font-size:20px;font-weight:700}
-.stat.s1 .lbl,.stat.s1 .num{color:var(--b-txt)}.stat.s2 .lbl,.stat.s2 .num{color:var(--g-txt)}.stat.s3 .lbl,.stat.s3 .num{color:var(--t-txt)}.stat.s4 .lbl,.stat.s4 .num{color:var(--m-txt)}
+.stat.s1 .lbl,.stat.s1 .num{color:var(--b-txt)}.stat.s2 .lbl,.stat.s2 .num{color:var(--g-txt)}.stat.s3 .lbl,.stat.s3 .num{color:var(--t-txt)}
 .filters{display:flex;gap:2px;margin-bottom:8px;border-bottom:1px solid var(--bdr);overflow-x:auto}
 .category-filter-bar{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
 .category-filter-bar label{font-size:11px;color:var(--txt3);font-weight:600}
@@ -125,7 +124,7 @@ header{position:sticky;top:0;background:var(--bg);z-index:20;padding:12px 0 10px
 .row-name{font-size:13px;font-weight:600;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .row-badges{display:flex;align-items:center;gap:5px;flex-shrink:0}
 .badge{display:inline-flex;align-items:center;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap}
-.badge-1{background:var(--b-bg);color:var(--b-txt)}.badge-2{background:var(--g-bg);color:var(--g-txt)}.badge-3{background:var(--t-bg);color:var(--t-txt)}.badge-4{background:var(--m-bg);color:var(--m-txt)}
+.badge-1{background:var(--b-bg);color:var(--b-txt)}.badge-2{background:var(--g-bg);color:var(--g-txt)}.badge-3{background:var(--t-bg);color:var(--t-txt)}
 .tag-sm{font-size:10px;padding:2px 6px;border-radius:4px;background:var(--surf2);color:var(--txt3);border:1px solid var(--bdr);white-space:nowrap}
 .tag-urg{background:#c0392b;color:#fff;border-color:#c0392b;font-weight:700;font-size:11px;padding:3px 8px;border-radius:6px;animation:pulse-red 2s infinite}
 .tag-ok{background:var(--g-bg);color:var(--g-txt);border-color:#c5e1a5;font-size:11px;padding:3px 8px}
@@ -171,10 +170,10 @@ header{position:sticky;top:0;background:var(--bg);z-index:20;padding:12px 0 10px
 .bar-row{display:flex;justify-content:space-between;font-size:12px;color:var(--txt2);margin-bottom:5px}
 .bar{height:5px;background:var(--surf2);border-radius:3px;overflow:hidden;margin-bottom:6px}
 .bar-fill{height:100%;border-radius:3px;transition:width .4s}
-.fill-1{background:var(--b-bar)}.fill-2{background:var(--g-bar)}.fill-3{background:var(--t-bar)}.fill-4{background:var(--m-bar)}
+.fill-1{background:var(--b-bar)}.fill-2{background:var(--g-bar)}.fill-3{background:var(--t-bar)}
 .goal-txt{font-size:11px;color:var(--txt3);margin-bottom:8px}
 .si-box{background:var(--surf2);border-radius:var(--r-sm);padding:8px 12px;font-size:12px;color:var(--txt2);margin-bottom:10px;line-height:1.5}
-.si-box.s1{border-left:3px solid var(--b-bar)}.si-box.s2{border-left:3px solid var(--g-bar)}.si-box.s3{border-left:3px solid var(--t-bar)}.si-box.s4{border-left:3px solid var(--m-bar)}
+.si-box.s1{border-left:3px solid var(--b-bar)}.si-box.s2{border-left:3px solid var(--g-bar)}.si-box.s3{border-left:3px solid var(--t-bar)}
 .urg-banner{background:#fff5f5;border:1px solid #ffcdd2;border-radius:var(--r-sm);padding:8px 12px;font-size:12px;color:var(--danger);display:flex;align-items:center;gap:8px;margin-bottom:10px;font-weight:600}
 @media(prefers-color-scheme:dark){.urg-banner{background:#2d1010;border-color:#7b2020;color:#ff8a80}}
 .vid-hd{font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--txt3);font-weight:700;margin-bottom:6px}
@@ -544,6 +543,12 @@ function writeBackupSheet_(channelList) {
   <h2>Tambah Channel</h2>
   <p class="sub">Masukkan satu atau banyak URL YouTube — <strong>1 URL per baris</strong> untuk import massal (cocok untuk ratusan channel sekaligus). Tahap &amp; tanggal mulai terdeteksi otomatis dari video pertama.</p>
   <div class="m-field">
+   <label>Kategori / Nama Kelompok (opsional)</label>
+   <input type="text" id="m-category" list="category-list" placeholder="Contoh: Gospel Blues, Worship, Tim A" maxlength="60" autocomplete="off">
+   <datalist id="category-list"></datalist>
+   <div class="help">Kategori ini diterapkan ke semua channel dalam proses ini dan bisa diedit lagi dari detail channel.</div>
+  </div>
+  <div class="m-field">
    <label>URL / Handle / Channel ID (satu per baris)</label>
    <textarea id="m-url" rows="8" placeholder="https://youtube.com/@channel1
 https://youtube.com/@channel2
@@ -596,7 +601,6 @@ function showToast(message, type = "info") {
 }
 
 function init() {
-  // Kalau config sudah tertanam di file, langsung ke PIN
   if (SHEETS_URL && (EDITOR_PIN || VIEWER_PIN)) {
     if (sessionStorage.getItem("ytmon-sess") === "ok") { 
       userRole = sessionStorage.getItem("ytmon-role") || "viewer";
@@ -615,6 +619,7 @@ function showScreen(s) {
   if(s==="pin")setTimeout(()=>{const el=document.getElementById("pin-input");if(el){el.value="";el.focus();}},100);
   document.getElementById("app").style.display      = "none";
 }
+
 function showApp() {
   document.getElementById("sc-setup").style.display = "none";
   document.getElementById("sc-pin").style.display   = "none";
@@ -676,7 +681,7 @@ function downloadFile() {
 
 // ── PIN ───────────────────────────────────────────────────
 function checkPin(){
-  const val=document.getElementById("pin-input").value;
+  const val = document.getElementById("pin-input").value;
   if(val === EDITOR_PIN){
     userRole = "editor";
     sessionStorage.setItem("ytmon-role", "editor");
@@ -933,9 +938,19 @@ async function fetchYT(ytId){
   return{ytId:item.id,name:item.snippet.title,thumbnail:item.snippet.thumbnails?.default?.url||null,subscribers:parseInt(item.statistics.subscriberCount||0),totalViews:parseInt(item.statistics.viewCount||0),videoCount:parseInt(item.statistics.videoCount||0),videos,lastFetched:new Date().toISOString()};
 }
 
+// ── Kategori / nama kelompok channel ──────────────────────
+function normalizeCategory(value){return (value||"").toString().trim().replace(/\s+/g," ").slice(0,60);}
+function escHtml(value){return (value??"").toString().replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");}
+function getCategories(){return [...new Set(channels.map(c=>normalizeCategory(c.category)).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"id"));}
+function populateCategoryDatalist(){const el=document.getElementById("category-list");if(el)el.innerHTML=getCategories().map(c=>`<option value="${escHtml(c)}"></option>`).join("");}
+function setCategoryFilter(value){if(value==="all"||value==="__none__")categoryFilter=value;else if(value.startsWith("cat:")){try{categoryFilter=decodeURIComponent(value.slice(4));}catch(e){categoryFilter="all";}}else categoryFilter="all";render();}
+function updateCategory(id,value){const category=normalizeCategory(value);channels=channels.map(c=>c.id===id?{...c,category}:c);if(categoryFilter!=="all"&&categoryFilter!=="__none__"&&!getCategories().includes(categoryFilter))categoryFilter="all";saveToSheets();render();showToast(category?`Kategori diubah menjadi “${category}”.`:"Kategori channel dihapus.","success");}
+
 // ── Add Channel (mendukung bulk import banyak URL sekaligus) ─
 function openAdd(){
   document.getElementById("m-url").value="";
+  document.getElementById("m-category").value="";
+  populateCategoryDatalist();
   document.getElementById("add-err").innerHTML="";
   document.getElementById("bulk-progress-wrap").style.display="none";
   document.getElementById("bulk-result").style.display="none";
@@ -954,9 +969,11 @@ function closeAdd(){
 }
 async function doAdd(){
   const raw=document.getElementById("m-url").value.trim();
+  const category=normalizeCategory(document.getElementById("m-category").value);
   if(!raw){showAddErr("Masukkan minimal 1 URL channel.");return;}
   if(!apiKeys.length){showAddErr("Tambah YouTube API Key dulu di panel atas.");return;}
-  const lines=[...new Set(raw.split("\n").map(l=>l.trim()).filter(Boolean))]; // dedupe baris yang sama persis
+  const lines=[...new Set(raw.split("
+").map(l=>l.trim()).filter(Boolean))]; // dedupe baris yang sama persis
   const total=lines.length;
 
   document.getElementById("add-err").innerHTML="";
@@ -988,7 +1005,7 @@ async function doAdd(){
       let sd=fv?localDate(fv):today();
       if(stage===2&&data.videos.length>=6){const sv=[...data.videos].sort((a,b)=>new Date(a.publishedAt)-new Date(b.publishedAt));sd=localDate(sv[5].publishedAt);}
       else if(stage===3)sd=today();
-      const newCh={id:Date.now().toString()+"_"+i,inputValue:line,ytId,stage,stageDate:sd,firstVideoDate:fv?localDate(fv):null,notes:"",addedAt:new Date().toISOString(),isError:false,errorMessage:null,isTrashed:false,...data};
+      const newCh={id:Date.now().toString()+"_"+i,inputValue:line,ytId,category,stage,stageDate:sd,firstVideoDate:fv?localDate(fv):null,notes:"",addedAt:new Date().toISOString(),isError:false,errorMessage:null,isTrashed:false,...data};
       channels.push(newCh);
       lastAddedId=newCh.id;
       successCount++;
@@ -1030,7 +1047,8 @@ async function doAdd(){
   }
   resEl.innerHTML=html;
   document.getElementById("btn-add").textContent="Tambah Lagi";
-  document.getElementById("m-url").value=failList.length?failList.map(f=>f.line).join("\n"):"";
+  document.getElementById("m-url").value=failList.length?failList.map(f=>f.line).join("
+"):"";
 }
 function showAddErr(m){document.getElementById("add-err").innerHTML=`<div class="m-err">⚠ ${m}</div>`;document.getElementById("btn-add").disabled=false;document.getElementById("btn-cancel-add").disabled=false;}
 
@@ -1343,12 +1361,14 @@ function render(){
     {v:"4",l:`Tahap 4 (${cnt(4)})`},
     {v:"error",l:`Error/Banned (${errList.length})`},
     {v:"trash",l:`Sampah (${trashList.length})`}
-  ].map(t=>`<button class="ftab${filter===t.v?" active":""}" onclick="filter=\'${t.v}\';render()">${t.l}</button>`).join("");
+  ].map(t=>`<button class="ftab${filter===t.v?" active":""}" onclick="filter='${t.v}';render()">${t.l}</button>`).join("");
+
   const categories=getCategories();
   const noCategoryCount=channels.filter(c=>!c.isTrashed&&!c.isError&&!normalizeCategory(c.category)).length;
   if(categoryFilter!=="all"&&categoryFilter!=="__none__"&&!categories.includes(categoryFilter))categoryFilter="all";
-  document.getElementById("category-filter-wrap").innerHTML=`<label for="category-filter-select">🏷 Filter kategori:</label><select id="category-filter-select" class="category-filter-select" onchange="setCategoryFilter(this.value)"><option value="all" ${categoryFilter==="all"?"selected":""}>Semua kategori (${activeTotal})</option>${categories.map(c=>{const count=channels.filter(ch=>!ch.isTrashed&&!ch.isError&&normalizeCategory(ch.category)===c).length;return \`<option value="cat:${encodeURIComponent(c)}" ${categoryFilter===c?"selected":""}>${escHtml(c)} (${count})</option>\`;}).join("")}<option value="__none__" ${categoryFilter==="__none__"?"selected":""}>Tanpa kategori (${noCategoryCount})</option></select>${categoryFilter!=="all"?\`<button class="btn btn-sm" onclick="setCategoryFilter(\'all\')">Reset</button>\`:""}`;
+  document.getElementById("category-filter-wrap").innerHTML=`<label for="category-filter-select">🏷 Filter kategori:</label><select id="category-filter-select" class="category-filter-select" onchange="setCategoryFilter(this.value)"><option value="all" ${categoryFilter==="all"?"selected":""}>Semua kategori (${activeTotal})</option>${categories.map(c=>{const count=channels.filter(ch=>!ch.isTrashed&&!ch.isError&&normalizeCategory(ch.category)===c).length;return \`<option value="cat:${encodeURIComponent(c)}" ${categoryFilter===c?"selected":""}>${escHtml(c)} (${count})</option>\`;}).join("")}<option value="__none__" ${categoryFilter==="__none__"?"selected":""}>Tanpa kategori (${noCategoryCount})</option></select>${categoryFilter!=="all"?`<button class="btn btn-sm" onclick="setCategoryFilter('all')">Reset</button>`:""}`;
   populateCategoryDatalist();
+
   let shown;
   if(filter==="error")shown=[...errList];
   else if(filter==="trash")shown=[...trashList];
