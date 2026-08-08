@@ -972,8 +972,7 @@ async function doAdd(){
   const category=normalizeCategory(document.getElementById("m-category").value);
   if(!raw){showAddErr("Masukkan minimal 1 URL channel.");return;}
   if(!apiKeys.length){showAddErr("Tambah YouTube API Key dulu di panel atas.");return;}
-  const lines=[...new Set(raw.split("
-").map(l=>l.trim()).filter(Boolean))]; // dedupe baris yang sama persis
+  const lines=[...new Set(raw.split("\n").map(l=>l.trim()).filter(Boolean))]; // dedupe baris yang sama persis
   const total=lines.length;
 
   document.getElementById("add-err").innerHTML="";
@@ -1047,8 +1046,7 @@ async function doAdd(){
   }
   resEl.innerHTML=html;
   document.getElementById("btn-add").textContent="Tambah Lagi";
-  document.getElementById("m-url").value=failList.length?failList.map(f=>f.line).join("
-"):"";
+  document.getElementById("m-url").value=failList.length?failList.map(f=>f.line).join("\n"):"";
 }
 function showAddErr(m){document.getElementById("add-err").innerHTML=`<div class="m-err">⚠ ${m}</div>`;document.getElementById("btn-add").disabled=false;document.getElementById("btn-cancel-add").disabled=false;}
 
