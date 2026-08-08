@@ -20,13 +20,14 @@ const VIEWER_PIN = "112233"; // Berikan ke user yang hanya boleh preview
   --b-bg:#E6F1FB;--b-txt:#0C447C;--b-bar:#3266ad;
   --g-bg:#EAF3DE;--g-txt:#27500A;--g-bar:#639922;
   --t-bg:#E1F5EE;--t-txt:#085041;--t-bar:#0F6E56;
+  --m-bg:#F3E5F5;--m-txt:#6A1B9A;--m-bar:#8E24AA;
   --ok:#2e7d32;--warn:#e65100;--danger:#c0392b;
 }
 @media(prefers-color-scheme:dark){:root{
   --bg:#0f0f0f;--surf:#1a1a1a;--surf2:#252525;
   --bdr:rgba(255,255,255,0.09);--bdr2:rgba(255,255,255,0.2);
   --txt:#f1f1f1;--txt2:#aaa;--txt3:#666;
-  --b-bg:#0C2240;--b-txt:#85B7EB;--g-bg:#173404;--g-txt:#C0DD97;--t-bg:#04342C;--t-txt:#5DCAA5;
+  --b-bg:#0C2240;--b-txt:#85B7EB;--g-bg:#173404;--g-txt:#C0DD97;--t-bg:#04342C;--t-txt:#5DCAA5;--m-bg:#311B40;--m-txt:#CE93D8;
   --shd:0 1px 3px rgba(0,0,0,0.4);
 }}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -69,7 +70,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 /* PIN */
 .screen-box.pin-box{max-width:300px;text-align:center}
 
-
 /* APP */
 .wrap{max-width:900px;margin:0 auto;padding:0 16px 48px}
 header{position:sticky;top:0;background:var(--bg);z-index:20;padding:12px 0 10px;border-bottom:1px solid var(--bdr);margin-bottom:14px}
@@ -91,10 +91,10 @@ header{position:sticky;top:0;background:var(--bg);z-index:20;padding:12px 0 10px
 .btn:hover{background:var(--surf2)}.btn:active{transform:scale(.98)}.btn:disabled{opacity:.4;cursor:not-allowed}
 .btn-red{background:var(--red);color:#fff;border-color:var(--red)}.btn-red:hover{background:var(--red-dk)}
 .btn-sm{height:26px;padding:0 9px;font-size:11px}.btn-icon{width:26px;height:26px;padding:0;justify-content:center}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-bottom:12px}
 .stat{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:9px 12px}
 .stat .lbl{font-size:11px;color:var(--txt3);margin-bottom:2px}.stat .num{font-size:20px;font-weight:700}
-.stat.s1 .lbl,.stat.s1 .num{color:var(--b-txt)}.stat.s2 .lbl,.stat.s2 .num{color:var(--g-txt)}.stat.s3 .lbl,.stat.s3 .num{color:var(--t-txt)}
+.stat.s1 .lbl,.stat.s1 .num{color:var(--b-txt)}.stat.s2 .lbl,.stat.s2 .num{color:var(--g-txt)}.stat.s3 .lbl,.stat.s3 .num{color:var(--t-txt)}.stat.s4 .lbl,.stat.s4 .num{color:var(--m-txt)}
 .filters{display:flex;gap:2px;margin-bottom:8px;border-bottom:1px solid var(--bdr);overflow-x:auto}
 .category-filter-bar{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
 .category-filter-bar label{font-size:11px;color:var(--txt3);font-weight:600}
@@ -124,7 +124,7 @@ header{position:sticky;top:0;background:var(--bg);z-index:20;padding:12px 0 10px
 .row-name{font-size:13px;font-weight:600;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .row-badges{display:flex;align-items:center;gap:5px;flex-shrink:0}
 .badge{display:inline-flex;align-items:center;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap}
-.badge-1{background:var(--b-bg);color:var(--b-txt)}.badge-2{background:var(--g-bg);color:var(--g-txt)}.badge-3{background:var(--t-bg);color:var(--t-txt)}
+.badge-1{background:var(--b-bg);color:var(--b-txt)}.badge-2{background:var(--g-bg);color:var(--g-txt)}.badge-3{background:var(--t-bg);color:var(--t-txt)}.badge-4{background:var(--m-bg);color:var(--m-txt)}
 .tag-sm{font-size:10px;padding:2px 6px;border-radius:4px;background:var(--surf2);color:var(--txt3);border:1px solid var(--bdr);white-space:nowrap}
 .tag-urg{background:#c0392b;color:#fff;border-color:#c0392b;font-weight:700;font-size:11px;padding:3px 8px;border-radius:6px;animation:pulse-red 2s infinite}
 .tag-ok{background:var(--g-bg);color:var(--g-txt);border-color:#c5e1a5;font-size:11px;padding:3px 8px}
@@ -170,10 +170,10 @@ header{position:sticky;top:0;background:var(--bg);z-index:20;padding:12px 0 10px
 .bar-row{display:flex;justify-content:space-between;font-size:12px;color:var(--txt2);margin-bottom:5px}
 .bar{height:5px;background:var(--surf2);border-radius:3px;overflow:hidden;margin-bottom:6px}
 .bar-fill{height:100%;border-radius:3px;transition:width .4s}
-.fill-1{background:var(--b-bar)}.fill-2{background:var(--g-bar)}.fill-3{background:var(--t-bar)}
+.fill-1{background:var(--b-bar)}.fill-2{background:var(--g-bar)}.fill-3{background:var(--t-bar)}.fill-4{background:var(--m-bar)}
 .goal-txt{font-size:11px;color:var(--txt3);margin-bottom:8px}
 .si-box{background:var(--surf2);border-radius:var(--r-sm);padding:8px 12px;font-size:12px;color:var(--txt2);margin-bottom:10px;line-height:1.5}
-.si-box.s1{border-left:3px solid var(--b-bar)}.si-box.s2{border-left:3px solid var(--g-bar)}.si-box.s3{border-left:3px solid var(--t-bar)}
+.si-box.s1{border-left:3px solid var(--b-bar)}.si-box.s2{border-left:3px solid var(--g-bar)}.si-box.s3{border-left:3px solid var(--t-bar)}.si-box.s4{border-left:3px solid var(--m-bar)}
 .urg-banner{background:#fff5f5;border:1px solid #ffcdd2;border-radius:var(--r-sm);padding:8px 12px;font-size:12px;color:var(--danger);display:flex;align-items:center;gap:8px;margin-bottom:10px;font-weight:600}
 @media(prefers-color-scheme:dark){.urg-banner{background:#2d1010;border-color:#7b2020;color:#ff8a80}}
 .vid-hd{font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--txt3);font-weight:700;margin-bottom:6px}
@@ -211,7 +211,6 @@ header{position:sticky;top:0;background:var(--bg);z-index:20;padding:12px 0 10px
 @keyframes spin{to{transform:rotate(360deg)}}
 .spin{display:inline-block;animation:spin .8s linear infinite}
 ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--bdr2);border-radius:3px}
-@media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr)}.d-grid{grid-template-columns:repeat(2,1fr)}}
 
 /* ── Notif Tahap 2 baru ── */
 .s2-notif-wrap{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
@@ -242,7 +241,6 @@ header{position:sticky;top:0;background:var(--bg);z-index:20;padding:12px 0 10px
 @media(prefers-color-scheme:dark){.tag-ext1{background:#2a1f47;color:#cdb8f0;border-color:#5e35b1}}
 .stat.sx .lbl,.stat.sx .num{color:#4527a0}
 @media(prefers-color-scheme:dark){.stat.sx .lbl,.stat.sx .num{color:#cdb8f0}}
-.stats{grid-template-columns:repeat(auto-fit,minmax(110px,1fr))}
 
 /* ── Error/Banned row ── */
 .ch-row.err-row{background:rgba(120,90,90,0.08);border-left:4px solid #8d6e63}
@@ -430,7 +428,7 @@ function writeBackupSheet_(channelList) {
     <div class="help">Hanya bisa melihat, data aman tidak bisa diedit</div>
    </div>
    <div id="s-err"></div>
-   <button class="btn-full" id="s-btn" onclick="doSetup()" disabled="">Mengecek koneksi...</button>
+   <button class="btn-full" id="s-btn" onclick="doSetup()">Cek Koneksi &amp; Generate File →</button>
   </div>
 
   <!-- Download view (muncul setelah setup berhasil) -->
@@ -972,7 +970,10 @@ async function doAdd(){
   const category=normalizeCategory(document.getElementById("m-category").value);
   if(!raw){showAddErr("Masukkan minimal 1 URL channel.");return;}
   if(!apiKeys.length){showAddErr("Tambah YouTube API Key dulu di panel atas.");return;}
-  const lines=[...new Set(raw.split("\n").map(l=>l.trim()).filter(Boolean))]; // dedupe baris yang sama persis
+  
+  // Perbaikan format baris baru di javascript
+  const lines=[...new Set(raw.split("\n").map(l=>l.trim()).filter(Boolean))];
+  
   const total=lines.length;
 
   document.getElementById("add-err").innerHTML="";
@@ -1364,7 +1365,16 @@ function render(){
   const categories=getCategories();
   const noCategoryCount=channels.filter(c=>!c.isTrashed&&!c.isError&&!normalizeCategory(c.category)).length;
   if(categoryFilter!=="all"&&categoryFilter!=="__none__"&&!categories.includes(categoryFilter))categoryFilter="all";
-  document.getElementById("category-filter-wrap").innerHTML=`<label for="category-filter-select">🏷 Filter kategori:</label><select id="category-filter-select" class="category-filter-select" onchange="setCategoryFilter(this.value)"><option value="all" ${categoryFilter==="all"?"selected":""}>Semua kategori (${activeTotal})</option>${categories.map(c=>{const count=channels.filter(ch=>!ch.isTrashed&&!ch.isError&&normalizeCategory(ch.category)===c).length;return \`<option value="cat:${encodeURIComponent(c)}" ${categoryFilter===c?"selected":""}>${escHtml(c)} (${count})</option>\`;}).join("")}<option value="__none__" ${categoryFilter==="__none__"?"selected":""}>Tanpa kategori (${noCategoryCount})</option></select>${categoryFilter!=="all"?`<button class="btn btn-sm" onclick="setCategoryFilter('all')">Reset</button>`:""}`;
+  
+  const catOptions = categories.map(c => {
+    const count = channels.filter(ch => !ch.isTrashed && !ch.isError && normalizeCategory(ch.category) === c).length;
+    return `<option value="cat:${encodeURIComponent(c)}" ${categoryFilter === c ? "selected" : ""}>${escHtml(c)} (${count})</option>`;
+  }).join("");
+  
+  const resetBtn = categoryFilter !== "all" ? `<button class="btn btn-sm" onclick="setCategoryFilter('all')">Reset</button>` : "";
+  
+  document.getElementById("category-filter-wrap").innerHTML=`<label for="category-filter-select">🏷 Filter kategori:</label><select id="category-filter-select" class="category-filter-select" onchange="setCategoryFilter(this.value)"><option value="all" ${categoryFilter==="all"?"selected":""}>Semua kategori (${activeTotal})</option>${catOptions}<option value="__none__" ${categoryFilter==="__none__"?"selected":""}>Tanpa kategori (${noCategoryCount})</option></select>${resetBtn}`;
+  
   populateCategoryDatalist();
 
   let shown;
